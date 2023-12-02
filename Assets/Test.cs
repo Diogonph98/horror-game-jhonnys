@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Start is called before the first frame update   JUSTICE IS 18
     void Start()
     {
         
