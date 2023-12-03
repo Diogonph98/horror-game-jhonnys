@@ -2,8 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     private Vector3 rot;
     public float speed;
@@ -12,6 +13,17 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     private Vector3 movementDiretion;
+
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            transform.GetChild(0).gameObject.SetActive(false);
+        }
+
+        
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!IsOwner) return;
         Move();
         Rotate();
     }
