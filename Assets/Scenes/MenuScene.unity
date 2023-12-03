@@ -2137,7 +2137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LobbyCode: 
   isHosting: 0
-  codeField: {fileID: 0}
+  codeField: {fileID: 663930805}
   MenuPanel: {fileID: 530977186}
   JoinPanel: {fileID: 194856546}
 --- !u!1 &1717899219
