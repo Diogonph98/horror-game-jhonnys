@@ -11,28 +11,47 @@ In the beginning of the game, the squad is at the lowest level: a very rudimenta
 The goal of the game: the squad should travel to several space bodies and gather resources without dying. There are two possible outcomes of this:
 
 - use the resources gathered to improve the spaceship, allowing the squad to travel farther (?) distances and visit more profitable environments;
-
 - use the resources gathered and sell them at a specific place (imagine some sort of shitty space station) which allows the players to buy powerups (more stamina, more inventory spaces, run faster, etc).
 
+# Further game mechanics
 
-# List of space bodies
+## Environments
 
+Initially there are three types of game environments:
+
+- Spaceship: center of operations for the squad, where they can store items retrieved, navigate to other colonies, etc.
+- Space Station: a space station filled with merchants and other NPCs that could help the players improve their own characters (e.g. through the sell of powerups)
+- Colonies: these can be planets, moons, asteroids or any other space objects. Places to where the squads can travel to, in order to gather resources and other relevant goods.
+
+## Spaceship components
+
+- Engine: allows the spaceship to travel farther distances. Mandatory upgrade to travel to higher level space bodies.
+- Radiation Protection: protects the spaceship from hazardous radiation emitted by other bodies, allowing them to stay longer orbiting space bodies (e.g. at level 1, the players can stay 8 minutes exploring a planet, at level 2 they can stay 9 minutes, at level 5 they can stay 12 minutes, and so on. Specific values up to discussion).
+- tba
+
+## Space bodies
+
+### Level 1 (no spaceship upgrades required):
 - Moon
 - Mars
 
-(when you unlock engine level 2)
-
+### Level 2 (requires some sort of upgrades, e.g. engine upgraded):
 - Venus
 - Asteroid belt
 
-(when you unlock engine level 3 and radiation protection level 1)
+### Level 3 (requires further spaceship upgrades):
 - Mercury
 - Jupiter
 - Europa
 - Ganymedes
 
-(when you unlock engine level 4 and radiation protection level 2)
+### Level 4 (requires further spaceship upgrades + character powerups advised)
 - Io
 - Callisto
 - Saturn
 
+## Resources
+These are goods that the players can gather when exploring the colonies. They can be used to:
+- upgrade spaceship
+- buy powerups (e.g. run faster, more stamina, etc)
+- buy relevant items (e.g. weapons)
