@@ -31,7 +31,7 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        //Application.targetFrameRate = 60;
+        Application.targetFrameRate = 60;
         MenuManager[] objs = GameObject.FindObjectsByType<MenuManager>(FindObjectsSortMode.InstanceID);
 
         if (objs.Length > 1)
