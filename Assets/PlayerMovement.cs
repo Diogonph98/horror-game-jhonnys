@@ -83,7 +83,7 @@ public class PlayerMovement : NetworkBehaviour
         if (!isGrounded)
         {
             gravityToApply += gravityLoaded;
-            rb.AddForce(gravityToApply);
+            rb.AddForce(gravityToApply * Time.fixedDeltaTime);
         }
         else
         {
@@ -103,7 +103,7 @@ public class PlayerMovement : NetworkBehaviour
         while (t > 0)
         {
             t -= Time.deltaTime;
-            rb.AddForce(up * jumpForce * 100 * Time.deltaTime);
+            rb.AddForce(up * jumpForce * 10 * Time.fixedDeltaTime);
             yield return null;
         }
         
@@ -132,7 +132,7 @@ public class PlayerMovement : NetworkBehaviour
         float InputMouseX = Input.GetAxis("Mouse X");
         float InputMouseY = Input.GetAxis("Mouse Y");
 
-        rot += new Vector3(InputMouseY * cameraSensY, InputMouseX * cameraSensX, 0);
+        rot += new Vector3(-InputMouseY * cameraSensY, InputMouseX * cameraSensX, 0);
         rot.x = Mathf.Clamp(rot.x, -30f, 45f);
         cameraPivot.transform.eulerAngles = rot;
         var forward = (transform.position - cameraAttached.transform.position).normalized;
@@ -163,8 +163,8 @@ public class PlayerMovement : NetworkBehaviour
         //movementDiretion.y = Physics.gravity.y;
 
         if(!isSpriting)
-            rb.velocity = movementDiretion * speed *100* Time.deltaTime;
+            rb.velocity = movementDiretion * speed *10* Time.fixedDeltaTime;
         else
-            rb.velocity = movementDiretion * speed*2 * 100 * Time.deltaTime;
+            rb.velocity = movementDiretion * speed*2 * 10 * Time.fixedDeltaTime;
     }
 }
