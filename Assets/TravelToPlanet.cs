@@ -11,10 +11,16 @@ public class TravelToPlanet : NetworkBehaviour
     [SerializeField]
     private string m_SceneName;
 
+    public delegate void DelegateMethod(); // This defines what type of method you're going to call.
+    public DelegateMethod methodToCall;
+
+    private PlayerMovement pMove;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!IsOwner) return;
+        pMove = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -24,9 +30,17 @@ public class TravelToPlanet : NetworkBehaviour
         if(Input.GetKeyDown(KeyCode.Alpha1))
         {
             m_SceneName = "MoonScene";
+            methodToCall = loadMoonSceneParameters;
+            loadNewScene();
+        }
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            m_SceneName = "RedPlanetScene";
+            methodToCall = loadRedPlanetSceneParameters;
             loadNewScene();
         }
     }
+
 
     public void loadNewScene()
     {
@@ -48,10 +62,30 @@ public class TravelToPlanet : NetworkBehaviour
     [ClientRpc]
     private void ResetAllClientsPositionsClientRpc()
     {
-        transform.position = new Vector3(0f, 7f, 0f);
-        transform.GetComponent<PlayerMovement>().gravityApplied.y /= 3;
-        transform.GetComponent<PlayerMovement>().speed /= 1.5f;
-        transform.GetComponent<PlayerMovement>().jumpForce /= 1.5f;
-        transform.GetComponent<PlayerMovement>().jumpIterations *= 2;
+        loadSceneParameters(methodToCall);
+    }
+
+    private void loadSceneParameters(DelegateMethod method)
+    {
+        method();
+        
+    }
+
+    private void loadMoonSceneParameters()
+    {
+        transform.position = new Vector3(0f, 7.5f, 0f);
+        transform.GetComponent<PlayerMovement>().gravityLoaded.y = pMove.earthGravity.y / 6;
+        transform.GetComponent<PlayerMovement>().speed = pMove.earthSpeed / 1.5f;
+        transform.GetComponent<PlayerMovement>().jumpForce = pMove.earthJumpForce* 3f;
+        //transform.GetComponent<PlayerMovement>().jumpIterations = pMove.earthJumpIterations * 2;
+    }
+
+    private void loadRedPlanetSceneParameters()
+    {
+        transform.position = new Vector3(0f, 7.5f, 0f);
+        pMove.gravityLoaded.y = pMove.earthGravity.y;
+        pMove.speed = pMove.earthSpeed;
+        pMove.jumpForce = pMove.earthJumpForce;
+        //pMove.jumpIterations = pMove.earthJumpIterations;
     }
 }
