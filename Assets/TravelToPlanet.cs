@@ -31,16 +31,32 @@ public class TravelToPlanet : NetworkBehaviour
         {
             m_SceneName = "MoonScene";
             methodToCall = loadMoonSceneParameters;
+            SetMethodParametersInClientRpc(0);
             loadNewScene();
         }
         else if(Input.GetKeyDown(KeyCode.Alpha2))
         {
             m_SceneName = "RedPlanetScene";
             methodToCall = loadRedPlanetSceneParameters;
+            SetMethodParametersInClientRpc(1);
             loadNewScene();
         }
     }
 
+
+    [ClientRpc]
+    private void SetMethodParametersInClientRpc(int methodInt)
+    {
+        if (IsServer) return;
+        if(methodInt == 0)
+        {
+            methodToCall = loadMoonSceneParameters;
+        }
+        else if(methodInt == 1)
+        {
+            methodToCall = loadRedPlanetSceneParameters;
+        }
+    }
 
     public void loadNewScene()
     {
@@ -50,14 +66,16 @@ public class TravelToPlanet : NetworkBehaviour
     [ServerRpc(RequireOwnership =false)]
     private void ResetAllClientsPositionsServerRpc()
     {
-        ResetAllClientsPositionsClientRpc();
+        
         var status = NetworkManager.SceneManager.LoadScene(m_SceneName,LoadSceneMode.Single);
         if (status != SceneEventProgressStatus.Started)
         {
             Debug.LogWarning($"Failed to load {m_SceneName} " +
                   $"with a {nameof(SceneEventProgressStatus)}: {status}");
         }
+        ResetAllClientsPositionsClientRpc();
     }
+
 
     [ClientRpc]
     private void ResetAllClientsPositionsClientRpc()
@@ -73,7 +91,7 @@ public class TravelToPlanet : NetworkBehaviour
 
     private void loadMoonSceneParameters()
     {
-        transform.position = new Vector3(0f, 7.5f, 0f);
+        transform.position = new Vector3(0f, 6f, 0f);
         transform.GetComponent<PlayerMovement>().gravityLoaded.y = pMove.earthGravity.y / 6;
         transform.GetComponent<PlayerMovement>().speed = pMove.earthSpeed / 1.5f;
         transform.GetComponent<PlayerMovement>().jumpForce = pMove.earthJumpForce* 3f;
@@ -82,7 +100,7 @@ public class TravelToPlanet : NetworkBehaviour
 
     private void loadRedPlanetSceneParameters()
     {
-        transform.position = new Vector3(0f, 7.5f, 0f);
+        transform.position = new Vector3(0f, 6f, 0f);
         pMove.gravityLoaded.y = pMove.earthGravity.y;
         pMove.speed = pMove.earthSpeed;
         pMove.jumpForce = pMove.earthJumpForce;

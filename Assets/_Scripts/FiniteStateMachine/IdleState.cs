@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,15 +14,7 @@ public class IdleState : State
     Vector3 forwardVector;
     Transform enemy;
 
-    private void Start()
-    {
-        canSeeThePlayer = false;
-        stateManager = transform.parent.GetComponent<StateManager>();
-        forwardVector = stateManager.forwardVector;
-        enemy = transform.root.transform;
-        //viewAngle *= 2;
-        playerLayerMask = (1 << 6);
-    }
+   
     public override State RunCurrentState()
     {
         if (!canSeeThePlayer)
@@ -49,7 +42,6 @@ public class IdleState : State
             }
         }
 
-
         if (canSeeThePlayer)
             return RestartStateParameters(chaseState);
         else
@@ -63,5 +55,25 @@ public class IdleState : State
         canSeeThePlayer = false;
         //stateManager.inTarget = null;
         return stateToReturn;
+    }
+
+    public override void Start()
+    {
+        Debug.Log("Idle State Start");
+        canSeeThePlayer = false;
+        stateManager = transform.parent.GetComponent<StateManager>();
+        forwardVector = stateManager.forwardVector;
+        enemy = transform.root.transform;
+        //viewAngle *= 2;
+        playerLayerMask = (1 << 6);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            stateManager.inTarget = other.gameObject;
+            stateManager.SwitchToTheNextState(chaseState);
+        }
     }
 }
