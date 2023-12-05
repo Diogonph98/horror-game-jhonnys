@@ -12,7 +12,9 @@ public class ItemPicked : NetworkBehaviour
     {
         transform.position = newPosition;
         transform.GetComponent<Rigidbody>().useGravity = gravityOn;
-        transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
+        transform.GetComponent<Rigidbody>().isKinematic = !gravityOn;
+        if(!transform.GetComponent<Rigidbody>().isKinematic)
+            transform.GetComponent<Rigidbody>().velocity = Vector3.zero;
         SetPositionClientRpc(newPosition);
 
     }

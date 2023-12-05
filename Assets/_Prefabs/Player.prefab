@@ -27,11 +27,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1896952745311165598}
   m_LocalRotation: {x: 0.019560853, y: -0, z: -0, w: 0.9998087}
-  m_LocalPosition: {x: -0.229, y: 1.474, z: -3.11}
+  m_LocalPosition: {x: -0.22900009, y: 0.704, z: -3.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5376005692008529051}
+  m_Father: {fileID: 8044592846512765153}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 2.242, y: 0, z: 0}
 --- !u!20 &1642884190753832948
@@ -43,7 +43,7 @@ Camera:
   m_GameObject: {fileID: 1896952745311165598}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.028301895, g: 0.028301895, b: 0.028301895, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -168,6 +168,38 @@ Transform:
   m_Father: {fileID: 5376005692008529051}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5387918883582447098
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8044592846512765153}
+  m_Layer: 0
+  m_Name: CameraPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8044592846512765153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5387918883582447098}
+  m_LocalRotation: {x: 0.09879876, y: 0, z: 0, w: 0.9951074}
+  m_LocalPosition: {x: 0, y: 0.77, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3071720752230578611}
+  m_Father: {fileID: 5376005692008529051}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 11.34, y: 0, z: 0}
 --- !u!1 &7473789907181092869
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,9 +284,9 @@ GameObject:
   - component: {fileID: 8171305202523842184}
   - component: {fileID: 3746487337208159916}
   - component: {fileID: -3958534322913432273}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -271,7 +303,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3071720752230578611}
+  - {fileID: 8044592846512765153}
   - {fileID: 3286585053098027469}
   - {fileID: 6406014545102913619}
   m_Father: {fileID: 0}
@@ -451,16 +483,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  cameraSens: 10
+  cameraSensX: 10
+  cameraSensY: 2
   cameraAttached: {fileID: 0}
+  cameraPivot: {fileID: 5387918883582447098}
   rb: {fileID: 0}
-  jumpForce: 30
-  jumpIterations: 100
+  jumpForce: 3000
+  jumpIterations: 0.1
   isJumping: 0
   isGrounded: 0
   isSpriting: 0
-  gravityApplied: {x: 0, y: 0, z: 0}
-  earthGravity: {x: 0, y: 0, z: 0}
+  gravityLoaded: {x: 0, y: 0, z: 0}
+  gravityToApply: {x: 0, y: 0, z: 0}
+  earthGravity: {x: 0, y: -9.81, z: 0}
+  earthJumpForce: 3000
+  earthSpeed: 15
+  earthJumpIterations: 0.1
 --- !u!114 &-3958534322913432273
 MonoBehaviour:
   m_ObjectHideFlags: 0

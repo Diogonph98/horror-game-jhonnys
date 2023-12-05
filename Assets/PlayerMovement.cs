@@ -8,21 +8,29 @@ public class PlayerMovement : NetworkBehaviour
 {
     private Vector3 rot;
     public float speed;
-    public float cameraSens;
+    public float cameraSensX;
+    public float cameraSensY;
     [SerializeField] private GameObject cameraAttached;
+    [SerializeField] private GameObject cameraPivot;
     [SerializeField] private Rigidbody rb;
 
     private Vector3 movementDiretion;
 
     public float jumpForce = 20f;
-    public int jumpIterations = 5;
+    public float jumpIterations = 5;
 
     public bool isJumping = false;
     public bool isGrounded = true;
     public bool isSpriting = false;
 
-    public Vector3 gravityApplied;
+    public Vector3 gravityLoaded;
+    public Vector3 gravityToApply;
+
+    [Header("Earth Parameters:")]
     public Vector3 earthGravity;
+    public float earthJumpForce;
+    public float earthSpeed;
+    public float earthJumpIterations;
 
 
 
@@ -42,9 +50,11 @@ public class PlayerMovement : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        earthGravity = Physics.gravity * 10;
-        gravityApplied = earthGravity;
-        cameraAttached = transform.GetChild(0).gameObject;
+        if(GameObject.Find("Camera"))
+            GameObject.Find("Camera").SetActive(false);
+        gravityToApply = Vector3.zero;
+        gravityLoaded = earthGravity;
+        cameraAttached = transform.GetChild(0).transform.GetChild(0).gameObject;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -69,38 +79,50 @@ public class PlayerMovement : NetworkBehaviour
             isSpriting = false;
         }
 
-        ApplyGravity();
-        if(!isGrounded)
+        isGrounded = CheckIfIsGrounded();
+        if (!isGrounded)
         {
-            rb.AddForce(gravityApplied);
+            gravityToApply += gravityLoaded;
+            rb.AddForce(gravityToApply * Time.fixedDeltaTime);
         }
+        else
+        {
+            gravityToApply = gravityLoaded;
+            isJumping = false;
+        }
+           
     }
 
     private IEnumerator applyJump()
     {
+        //if (isJumping) yield break;
         isJumping = true;
-        var t = jumpIterations;
+        var t = 0.1f;
         var up = new Vector3(0, 1, 0);
+
         while (t > 0)
         {
-            t -= 1;
-            rb.AddForce(up * jumpForce * 10);
+            t -= Time.deltaTime;
+            rb.AddForce(up * jumpForce * 10 * Time.fixedDeltaTime);
             yield return null;
         }
-        isJumping = false;
+        
     }
 
-    private void ApplyGravity()
+    private bool CheckIfIsGrounded()
     {
+        bool grounded = false;
         int layerMask = (1 << 3);
         if(Physics.CheckSphere(transform.position,1.05f,layerMask))
         {
-            isGrounded = true;
+            grounded = true;
         }
         else
         {
-            isGrounded = false;
+            grounded = false;
         }
+
+        return grounded;
     }
 
    
@@ -108,9 +130,11 @@ public class PlayerMovement : NetworkBehaviour
     private void Rotate()
     {
         float InputMouseX = Input.GetAxis("Mouse X");
+        float InputMouseY = Input.GetAxis("Mouse Y");
 
-        rot += new Vector3(0, InputMouseX, 0) * cameraSens;
-        transform.eulerAngles = rot;
+        rot += new Vector3(-InputMouseY * cameraSensY, InputMouseX * cameraSensX, 0);
+        rot.x = Mathf.Clamp(rot.x, -30f, 45f);
+        cameraPivot.transform.eulerAngles = rot;
         var forward = (transform.position - cameraAttached.transform.position).normalized;
         forward.y = 0;
         transform.forward = forward;
@@ -139,8 +163,8 @@ public class PlayerMovement : NetworkBehaviour
         //movementDiretion.y = Physics.gravity.y;
 
         if(!isSpriting)
-            rb.velocity = movementDiretion * speed *100* Time.deltaTime;
+            rb.velocity = movementDiretion * speed *10* Time.fixedDeltaTime;
         else
-            rb.velocity = movementDiretion * speed*2 * 100 * Time.deltaTime;
+            rb.velocity = movementDiretion * speed*2 * 10 * Time.fixedDeltaTime;
     }
 }

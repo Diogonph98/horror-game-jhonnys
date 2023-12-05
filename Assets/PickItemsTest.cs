@@ -56,7 +56,7 @@ public class PickItemsTest : NetworkBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 picked = false;
-                var pos = transform.position;
+                var pos = networkObjectPicked.transform.position;
                 pos.y = 0f;
                 networkObjectPicked.GetComponent<ItemPicked>().SetPositionServerRpc(pos, true);
                 networkObjectPicked.GetComponent<ItemPicked>().SetParentServerRpc(transform.parent.gameObject,false);
