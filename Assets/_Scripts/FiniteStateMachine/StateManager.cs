@@ -12,6 +12,11 @@ public class StateManager : MonoBehaviour
     {
         forwardVector = transform.root.transform.forward;
     }
+
+    private void Start()
+    {
+        currentState.Start();
+    }
     // Update is called once per frame
     void Update()
     {
@@ -21,6 +26,7 @@ public class StateManager : MonoBehaviour
     private void RunStateMachine()
     {
         transform.root.transform.forward = forwardVector; 
+
         State nextState = currentState?.RunCurrentState();
 
         if(nextState != null)
@@ -29,8 +35,10 @@ public class StateManager : MonoBehaviour
         }
     }
 
-    private void SwitchToTheNextState(State nextState)
+    public void SwitchToTheNextState(State nextState)
     {
+        if(nextState != currentState)
+            nextState.Start();
         currentState = nextState;
     }
 }

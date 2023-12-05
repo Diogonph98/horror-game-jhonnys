@@ -15,8 +15,9 @@ public class ChaseState : State
 
     private Rigidbody rb;
 
-    private void Start()
+    public override void Start()
     {
+        Debug.Log("Chase State Start");
         rb = transform.root.GetComponent<Rigidbody>();
         stateManager = transform.parent.GetComponent<StateManager>();
         playerLayerMask = (1 << 6);

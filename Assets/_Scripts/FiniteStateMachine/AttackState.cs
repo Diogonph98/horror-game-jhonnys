@@ -9,13 +9,14 @@ public class AttackState : State
     [SerializeField] private StateManager stateManager;
     [SerializeField] private bool playerEscaped = false;
     int playerLayerMask;
-    private void Start()
+    public override void Start()
     {
+        Debug.Log("Attack State Start");
         playerLayerMask = (1 << 6);
     }
     public override State RunCurrentState()
     {
-        bool playerInRange = Physics.CheckSphere(transform.position, 2.5f, playerLayerMask);
+        bool playerInRange = Physics.CheckSphere(transform.position, 1.5f, playerLayerMask);
 
         if(!playerInRange)
         {
